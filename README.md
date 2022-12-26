@@ -1,24 +1,198 @@
-# IS-Lab4
-Intelligent systems. Task for the laboratory for hand written character recognition
 
-# Aim
-Practically test the application of specialized artificial neural network MATLAB (or alternative) functions to solve practical problems. Learn to quickly test multiple different neural networks for the same task.
-# Tasks (maximum 8 points)
-Recognize the handwritten numbers in the image using your own created or specialized MATLAB functions. For image processing you can take advantage of the already developed feature extractors (image segmentation, uniform, 50x70 pixels, preparation of size squares with numbers, 35 character extraction ...). You need to prepare your images with handwritten symbols by your own. You can use the prepared "vaizdo_atpazinimas.m" file, which uses the "pozymiai_raidems_atpazinti.m" function for character recognition and training (you need to specify the image name and the number of character strings in the image).
-Decrease the number of RBFNs for recognizing neurons from 13 to any selected smaller number and check how well the network succeeds in recognizing your handwritten words or numbers.
-# Additional task (2 additional points)
-Solve the same problem using a multilayer perceptron (e.g., using "newff" or "feedforwardnet" functions).
-# Suggested reading
-Dalius Navakauskas, Artūras Serackis. Skaitmeninis signalų apdorojimas taikant MATLAB. DOI: 10.3846/1457-S (https://www.ebooks.vgtu.lt/pdfreader/skaitmeninis-signal-apdorojimas-taikant-matlab55688) (in LT)
+# Prepare data set for training and target vector
 
-# IS-Lab4 (LT)
-Intelektualiosios sistemos. Ketvirtojo laboratorinio darbo užduotis.
-# Tikslas
-Praktiškai išbandyti specializuotų dirbtinių neuronų tinklų MATLAB (arba alternatyvių) funkcijų taikymą praktiniams uždaviniams spręsti. Išmokti to paties uždavinio sprendimui greitai patikrinti kelis skirtingus neuronų tinklus.
-# Užduotys (maks. 8 balai)
-Naudodami savo sukurtas arba specializuotas MATLAB funkcijas, atpažinkite vaizde pateiktus ranka rašytus skaičius. Vaizdo apdorojimui galite pasinaudoti jau sukurtomis funkcijomis (vaizdo segmentavimo, vienodo, 50x70 taškų, dydžio kvadratėlių su skaičiais paruošimo, 35 požymių išskyrimo...). Turite paruošti savo vaizdus su ranka rašytais simboliais. Atpažintuvo mokymui ir testavimui galite naudoti paruoštą "vaizdo_atpazinimas.m" failą, kuriame požymiams išskirti naudojama "pozymiai_raidems_atpazinti.m" funkcija (reikia nurodyti paveikslėlio pavadinimą ir simbolių eilučių vaizde skaičių).
-Sumažinkite RBFN tinklo, skirto atpažinimui neuronų skaičių iš 13 į kokį nors pasirinktą mažesnį skaičių ir patikrinkite, kaip tinklui sekasi atpažinti jūsų parašytus ranka žodžius ar skaičius.
-# Papildoma užduotis (papildomi 2 balai)
-Išspręskite tą patį uždavinį, naudodami daugiasluoksnį perceptroną (pvz., naudojant"newff arba "feedforwardnet" funkcijos).
-# Rekomenduojama literatūra
-Dalius Navakauskas, Artūras Serackis. Skaitmeninis signalų apdorojimas taikant MATLAB. DOI: 10.3846/1457-S (https://www.ebooks.vgtu.lt/pdfreader/skaitmeninis-signal-apdorojimas-taikant-matlab55688)
+```matlab:Code
+train_set_name = 'train_data.jpg';
+train_features = pozymiai_raidems_atpazinti(train_set_name, 11);
+```
+
+
+![figure_0.eps](latex_images/figure_0.eps)
+
+
+![figure_1.eps](latex_images/figure_1.eps)
+
+
+```matlab:Code
+train_feat_matr = cell2mat(train_features);
+pavadinimas = 'first_test.jpg';
+first_test_features = pozymiai_raidems_atpazinti(pavadinimas, 11);
+```
+
+
+![figure_2.eps](latex_images/figure_2.eps)
+
+
+```matlab:Code
+first_test_matr = cell2mat(first_test_features);
+pavadinimas = 'test_data.jpg';
+pozymiai_patikrai = pozymiai_raidems_atpazinti(pavadinimas, 1);
+```
+
+
+![figure_3.eps](latex_images/figure_3.eps)
+
+
+```matlab:Code
+main_test_matr = cell2mat(pozymiai_patikrai);
+```
+
+
+```matlab:Code
+T = {[ones(1, 22); zeros(10, 22)], ...
+    [zeros(1, 22); ones(1, 22); zeros(9, 22)], ...
+    [zeros(2, 22); ones(1, 22); zeros(8, 22)], ...
+    [zeros(3, 22); ones(1, 22); zeros(7, 22)], ...
+    [zeros(4, 22); ones(1, 22); zeros(6, 22)], ...
+    [zeros(5, 22); ones(1, 22); zeros(5, 22)], ...
+    [zeros(6, 22); ones(1, 22); zeros(4, 22)], ...
+    [zeros(7, 22); ones(1, 22); zeros(3, 22)], ...
+    [zeros(8, 22); ones(1, 22); zeros(2, 22)], ...
+    [zeros(9, 22); ones(1, 22); zeros(1, 22)], ...
+    [zeros(10, 22); ones(1, 22)]};
+```
+
+# Create and test network with 13 neurons
+
+```matlab:Code
+tinklas = newrb(train_feat_matr,T,0,1,13);
+```
+
+
+```text:Output
+NEWRB, neurons = 0, MSE = 0.0826446
+```
+
+
+```matlab:Code
+atsakymas = recognize(tinklas, first_test_matr);
+disp(atsakymas)
+```
+
+
+```text:Output
+ABCDEFGHIKJ
+```
+
+
+```matlab:Code
+atsakymas = recognize(tinklas, main_test_matr);
+disp(atsakymas)
+```
+
+
+```text:Output
+HIJACAED
+```
+
+# Network with 5 neurons
+
+```matlab:Code
+tinklas5 = newrb(train_feat_matr,T,0,1,5);
+```
+
+
+```text:Output
+NEWRB, neurons = 0, MSE = 0.0826446
+```
+
+
+```matlab:Code
+atsakymas = recognize(tinklas5, first_test_matr);
+disp(atsakymas)
+```
+
+
+```text:Output
+ABCDCAAAIKA
+```
+
+
+```matlab:Code
+atsakymas = recognize(tinklas5, main_test_matr);
+disp(atsakymas)
+```
+
+
+```text:Output
+AIAACACD
+```
+
+# Network with automatic neurons
+
+```matlab:Code
+tinklasinf = newrb(train_feat_matr,T,0,1);
+```
+
+
+```text:Output
+NEWRB, neurons = 0, MSE = 0.0826446
+NEWRB, neurons = 50, MSE = 0.00250204
+NEWRB, neurons = 100, MSE = 0.000666438
+NEWRB, neurons = 150, MSE = 0.000187091
+NEWRB, neurons = 200, MSE = 3.1099e-05
+```
+
+
+![figure_4.eps](latex_images/figure_4.eps)
+
+
+```matlab:Code
+atsakymas = recognize(tinklasinf, first_test_matr);
+disp(atsakymas)
+```
+
+
+```text:Output
+ABCDEFGHIKJ
+```
+
+
+```matlab:Code
+atsakymas = recognize(tinklasinf, main_test_matr);
+disp(atsakymas)
+```
+
+
+```text:Output
+HIJACCED
+```
+
+  
+
+```matlab:Code
+function atsakymas = recognize(network, features)
+    Y2 = sim(network, features);
+    [a2, b2] = max(Y2);
+    raidziu_sk = size(features,2);
+    atsakymas = zeros(raidziu_sk, 1);
+    for k = 1:raidziu_sk
+        switch b2(k)
+            case 1
+                atsakymas(k) = 'A';
+            case 2
+                atsakymas(k) = 'B';
+            case 3
+                atsakymas(k) = 'C';
+            case 4
+                atsakymas(k) = 'D';
+            case 5
+                atsakymas(k) = 'E';
+            case 6
+                atsakymas(k) = 'F';
+            case 7
+                atsakymas(k) = 'G';
+            case 8
+                atsakymas(k) = 'H';
+            case 9
+                atsakymas(k) = 'I';
+            case 10
+                atsakymas(k) = 'K';
+            case 11
+                atsakymas(k) = 'J';
+        end
+    end
+    atsakymas = char(atsakymas)';
+end
+```
+
