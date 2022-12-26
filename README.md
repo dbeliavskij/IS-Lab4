@@ -7,10 +7,7 @@ train_features = pozymiai_raidems_atpazinti(train_set_name, 11);
 ```
 
 
-![figure_0.eps](latex_images/figure_0.eps)
-
-
-![figure_1.eps](latex_images/figure_1.eps)
+![figure_0.jpg](latex_images/figure_0.jpg)
 
 
 ```matlab:Code
@@ -20,7 +17,7 @@ first_test_features = pozymiai_raidems_atpazinti(pavadinimas, 11);
 ```
 
 
-![figure_2.eps](latex_images/figure_2.eps)
+![figure_2.jpg](latex_images/figure_2.jpg)
 
 
 ```matlab:Code
@@ -30,7 +27,7 @@ pozymiai_patikrai = pozymiai_raidems_atpazinti(pavadinimas, 1);
 ```
 
 
-![figure_3.eps](latex_images/figure_3.eps)
+![figure_3.jpg](latex_images/figure_3.jpg)
 
 
 ```matlab:Code
@@ -134,7 +131,7 @@ NEWRB, neurons = 200, MSE = 3.1099e-05
 ```
 
 
-![figure_4.eps](latex_images/figure_4.eps)
+![figure_4.jpg](latex_images/figure_4.jpg)
 
 
 ```matlab:Code
