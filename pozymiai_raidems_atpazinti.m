@@ -8,7 +8,7 @@ function pozymiai = pozymiai_raidems_atpazinti(pavadinimas, pvz_eiluciu_sk)
 %%
 % Vaizdo su pavyzdþiais nuskaitymas | Read image with written symbols
 V = imread(pavadinimas);
-figure(12), imshow(V)
+%figure(12), imshow(V)
 %% Raidþiø iðkirpimas ir sudëliojimas á kintamojo 'objektai' celes |
 %% Perform segmentation of the symbols and write into cell variable 
 % RGB image is converted to grayscale
@@ -18,29 +18,29 @@ V_pustonis = rgb2gray(V);
 slenkstis = graythresh(V_pustonis);
 % pustonio vaizdo keitimas dvejetainiu
 % a grayscale image is converte to binary image
-V_dvejetainis = im2bw(V_pustonis,slenkstis);
+V_dvejetainis = ~bwareaopen(~imbinarize(V_pustonis), 500);
 % rezultato atvaizdavimas
 % show the resulting image
-figure(1), imshow(V_dvejetainis)
+%figure(1), imshow(V_dvejetainis)
 % vaizde esanèiø objektø kontûrø paieðka
 % search for the contour of each object
 V_konturais = edge(uint8(V_dvejetainis));
 % rezultato atvaizdavimas
 % show the resulting image
-figure(2),imshow(V_konturais)
+%figure(2),imshow(V_konturais)
 % objektø kontûrø uþpildymas 
 % fill the contours
 se = strel('square',7); % struktûrinis elementas uþpildymui
 V_uzpildyti = imdilate(V_konturais, se); 
 % rezultato atvaizdavimas
 % show the result
-figure(3),imshow(V_uzpildyti)
+%figure(3),imshow(V_uzpildyti)
 % tuðtumø objetø viduje uþpildymas
 % fill the holes
 V_vientisi= imfill(V_uzpildyti,'holes');
 % rezultato atvaizdavimas
 % show the result
-figure(4),imshow(V_vientisi)
+%figure(4),imshow(V_vientisi)
 % vientisø objektø dvejetainiame vaizde numeravimas
 % set labels to binary image objects
 [O_suzymeti Skaicius] = bwlabel(V_vientisi);
@@ -80,7 +80,7 @@ for k = 1:Skaicius
 end
 % vieno ið vaizdo fragmentø atvaizdavimas
 % show one of the symbol's image
-figure(5),
+%figure(5),
 for k = 1:Skaicius
    subplot(pvz_eiluciu_sk,raidziu_sk,k), imshow(objektai{k})
 end
